@@ -6,6 +6,16 @@ import json
 
 app = FastAPI()
 
+# Enable CORS for POST from any origin
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
+
 @app.get("/")
 def root():
     return {"status": "ok"}
@@ -75,12 +85,3 @@ async def latency_analytics(request: Request):
         })
 
     return {"regions": results}
-
-# ✅ CORSMiddleware LAST — after all routes
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
